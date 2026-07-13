@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package greeting;
+
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+option java_package = "com.example.grpcsample.grpc";
+option java_outer_classname = "GreetingProto";
+
+// Kontrak service gRPC: mendefinisikan operasi yang bisa dipanggil beserta bentuk data-nya.
+// File inilah yang di-generate protobuf-maven-plugin menjadi kelas Java saat "mvn compile".
+service GreetingService {
+  rpc SayHello (HelloRequest) returns (HelloReply);
+}
+
+message HelloRequest {
+  string name = 1;
+  int32 age = 2;
+  double height_cm = 3;
+  google.protobuf.Timestamp birth_date = 4;
+}
+
+message HelloReply {
+  string message = 1;
+  int32 age_next_year = 2;
+  double height_m = 3;
+  google.protobuf.Timestamp processed_at = 4;
+}
