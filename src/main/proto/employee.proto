@@ -2,10 +2,22 @@ syntax = "proto3";
 
 package employee;
 
+// Well-known type bawaan protobuf untuk merepresentasikan instant waktu (detik + nanodetik
+// sejak epoch). Dipakai karena proto3 tidak punya tipe date/datetime native — field join_date
+// dan registered_at di bawah bertipe google.protobuf.Timestamp, bukan string tanggal biasa.
 import "google/protobuf/timestamp.proto";
 
+// true -> tiap message/service/enum di-generate jadi file .java top-level terpisah
+// (RegisterEmployeeRequest.java, dst), bukan dibungkus sebagai inner class dari satu
+// outer class. Hasilnya import di sisi Java lebih ringkas: "RegisterEmployeeRequest"
+// bukan "EmployeeProto.RegisterEmployeeRequest".
 option java_multiple_files = true;
+// Package Java tempat kelas-kelas hasil generate protoc diletakkan. Sengaja disamakan
+// dengan greeting.proto supaya kedua service berbagi satu package Java yang sama;
+// aman karena nama message/enum/service di kedua file tidak ada yang bentrok.
 option java_package = "com.example.grpcsample.grpc";
+// Nama kelas pembungkus (dipakai protoc sebagai identitas file ini; hanya relevan
+// sebagai outer class kalau java_multiple_files di-set false).
 option java_outer_classname = "EmployeeProto";
 
 service EmployeeService {
